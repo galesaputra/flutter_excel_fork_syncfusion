@@ -6191,7 +6191,6 @@ class Workbook {
   /// workbook.dispose();
   /// ```
   Stream<List<int>> saveStream(String filePath) async* {
-    print('start saving');
     _saving = true;
     final SerializeWorkbook serializer = SerializeWorkbook(this);
     serializer._saveInternal();
@@ -6220,9 +6219,11 @@ class Workbook {
       // Write the stream to a file
       final file = File(tempPath);
       await file.openWrite().addStream(controller.stream);
+      print('end time: ${DateTime.now()}');
       print('success saved to ${tempPath}');
-    } catch (e) {
+    } catch (e, s) {
       // Handle errors
+      print('error $e');
       controller.addError(e);
     } finally {
       _saving = false;
