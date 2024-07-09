@@ -6190,6 +6190,47 @@ class Workbook {
   /// File('ExcelSave.xlsx').writeAsBytes(bytes);
   /// workbook.dispose();
   /// ```
+  Stream<List<int>> saveStream(String filePath) async* {
+    _saving = true;
+    print('start saving');
+    final SerializeWorkbook serializer = SerializeWorkbook(this);
+    serializer._saveInternal();
+
+    final List<int>? bytes = ZipEncoder().encode(archive);
+
+    // Using a stream controller to yield bytes in chunks
+    final controller = StreamController<List<int>>();
+    final chunkSize = 1024 * 1024; // 1MB chunks (adjust as needed)
+    final tempDir = await getDownloadsDirectory();
+    final tempPath = '${tempDir!.path}/temp_excel_new.xlsx';
+
+    try {
+      int offset = 0;
+      while (offset < bytes!.length) {
+        int end = offset + chunkSize;
+        if (end > bytes.length) {
+          end = bytes.length;
+        }
+        List<int> chunk = bytes.sublist(offset, end);
+        controller.add(chunk);
+        offset = end;
+      }
+      controller.close();
+
+      // Write the stream to a file
+      final file = File(tempPath);
+      await file.openWrite().addStream(controller.stream);
+      print('success saved to ${tempPath}');
+    } catch (e) {
+      // Handle errors
+      controller.addError(e);
+    } finally {
+      _saving = false;
+    }
+
+    yield* controller.stream;
+  }
+
   List<int> saveAsStream() {
     _saving = true;
     final SerializeWorkbook serializer = SerializeWorkbook(this);

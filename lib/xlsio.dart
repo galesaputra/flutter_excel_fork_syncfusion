@@ -7,6 +7,8 @@ import 'dart:core';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'dart:io';
+import 'dart:async';
 
 import 'package:archive/archive.dart';
 import 'package:crypto/crypto.dart';
@@ -20,8 +22,8 @@ import 'package:intl/number_symbols_data.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:syncfusion_officecore/officecore.dart';
 import 'package:xml/xml.dart';
+import 'package:path_provider/path_provider.dart';
 
-part 'src/test/images.dart';
 part 'src/xlsio/autoFilters/auto_filter.dart';
 part 'src/xlsio/autoFilters/autofilter_impl.dart';
 part 'src/xlsio/autoFilters/autofiltercollection.dart';
