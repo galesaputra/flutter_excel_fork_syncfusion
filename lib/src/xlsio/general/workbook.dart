@@ -6191,8 +6191,8 @@ class Workbook {
   /// workbook.dispose();
   /// ```
   Stream<List<int>> saveStream(String filePath) async* {
-    _saving = true;
     print('start saving');
+    _saving = true;
     final SerializeWorkbook serializer = SerializeWorkbook(this);
     serializer._saveInternal();
 
