@@ -10,7 +10,8 @@ dependencies:
   path_provider: ^2.0.1
   open_file: ^3.0.1
   syncfusion_flutter_xlsio:
-    path: ../../syncfusion_flutter_xlsio
+    path: ../
+    publish_to: none
 
 # The following section is specific to Flutter. 
 flutter:
